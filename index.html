@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBWOOF — The Alpha Memecoin of Robinhood Chain</title>
+<meta name="description" content="ROBWOOF ($ROBWOOF) — The Alpha Memecoin of Robinhood Chain. Hunt together. Hodl forever. Built for the pack.">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #060907;
+    --bg-alt: #0b120c;
+    --card: #0f170f;
+    --card-line: rgba(126,232,66,0.16);
+    --green: #7EE842;
+    --green-bright: #ADFF6B;
+    --green-dim: #274317;
+    --text: #EAF6E4;
+    --text-dim: #93a68a;
+    --text-faint: #5c6a55;
+    --glow: 0 0 40px rgba(126,232,66,0.35);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Grotesk', sans-serif;
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--green); color:#04160.4;}
+
+  h1,h2,h3,.display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+    text-transform:uppercase;
+    line-height:1;
+  }
+
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--green);
+  }
+
+  .wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  img{display:block; max-width:100%;}
+
+  /* ===== background halo motif (signature element) ===== */
+  .halo{
+    position:absolute;
+    border-radius:50%;
+    border:1.5px solid rgba(126,232,66,0.22);
+    pointer-events:none;
+  }
+
+  /* ===== NAV ===== */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    backdrop-filter:blur(14px);
+    background:rgba(6,9,7,0.72);
+    border-bottom:1px solid var(--card-line);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 32px;
+    max-width:1160px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand img{
+    width:40px; height:40px; border-radius:50%;
+    border:2px solid var(--green);
+    box-shadow:0 0 16px rgba(126,232,66,0.45);
+  }
+  .brand span{
+    font-family:'Anton', sans-serif;
+    font-size:20px;
+    letter-spacing:0.04em;
+  }
+  .brand span em{color:var(--green); font-style:normal;}
+
+  nav.links{
+    display:flex;
+    gap:34px;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  nav.links a{
+    color:var(--text-dim);
+    transition:color .2s;
+    position:relative;
+  }
+  nav.links a:hover{color:var(--green-bright);}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 24px;
+    border-radius:999px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease;
+    border:1.5px solid transparent;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-solid{
+    background:var(--green);
+    color:#07130a;
+    box-shadow:0 0 0 rgba(126,232,66,0);
+  }
+  .btn-solid:hover{box-shadow:0 6px 30px rgba(126,232,66,0.45);}
+  .btn-ghost{
+    border-color:rgba(126,232,66,0.4);
+    color:var(--green-bright);
+  }
+  .btn-ghost:hover{background:rgba(126,232,66,0.08); border-color:var(--green);}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:90px;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .hero-bg img{
+    width:100%; height:100%;
+    object-fit:cover;
+    object-position:center 30%;
+    opacity:0.55;
+  }
+  .hero-bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(6,9,7,0.35) 0%, rgba(6,9,7,0.55) 55%, var(--bg) 96%),
+      linear-gradient(90deg, var(--bg) 0%, rgba(6,9,7,0.35) 38%, rgba(6,9,7,0.1) 65%);
+  }
+
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    max-width:1160px;
+    margin:0 auto;
+    padding:0 32px;
+    width:100%;
+  }
+
+  .hero-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 16px;
+    border:1px solid rgba(126,232,66,0.35);
+    border-radius:999px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--green-bright);
+    margin-bottom:28px;
+  }
+  .hero-tag .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green);
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1; transform:scale(1);}
+    50%{opacity:0.4; transform:scale(0.75);}
+  }
+
+  .hero h1{
+    font-size:clamp(52px, 9vw, 118px);
+    max-width:820px;
+    color:var(--text);
+  }
+  .hero h1 .line2{color:var(--green); display:block;
+    text-shadow:0 0 60px rgba(126,232,66,0.5);}
+
+  .hero p.sub{
+    font-size:18px;
+    color:var(--text-dim);
+    max-width:480px;
+    margin-top:26px;
+    line-height:1.6;
+  }
+
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    margin-top:42px;
+    flex-wrap:wrap;
+  }
+
+  .hero-stats{
+    display:flex;
+    gap:48px;
+    margin-top:72px;
+    flex-wrap:wrap;
+  }
+  .hero-stats .stat b{
+    display:block;
+    font-family:'Anton',sans-serif;
+    font-size:30px;
+    color:var(--green-bright);
+  }
+  .hero-stats .stat span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+  }
+
+  /* ===== TICKER ===== */
+  .ticker{
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+    background:var(--bg-alt);
+    overflow:hidden;
+    padding:16px 0;
+    position:relative;
+    z-index:3;
+  }
+  .ticker-track{
+    display:flex;
+    width:max-content;
+    animation:scroll 26s linear infinite;
+    gap:0;
+  }
+  .ticker-track span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    padding:0 24px;
+    white-space:nowrap;
+  }
+  .ticker-track span.accent{color:var(--green);}
+  @keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ===== SECTION generic ===== */
+  section{
+    position:relative;
+    padding:120px 0;
+  }
+  .section-head{
+    max-width:640px;
+    margin-bottom:64px;
+  }
+  .section-head h2{
+    font-size:clamp(34px,5vw,56px);
+    margin-top:14px;
+  }
+  .section-head p{
+    color:var(--text-dim);
+    margin-top:18px;
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  /* ===== PILLARS ===== */
+  .pillars{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--card-line);
+    border:1px solid var(--card-line);
+  }
+  .pillar{
+    background:var(--bg);
+    padding:40px 28px;
+    transition:background .25s;
+  }
+  .pillar:hover{background:var(--card);}
+  .pillar .icon{
+    width:44px; height:44px;
+    border-radius:10px;
+    border:1.5px solid var(--green-dim);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--green);
+    margin-bottom:22px;
+    font-size:20px;
+  }
+  .pillar h3{
+    font-size:20px;
+    margin-bottom:12px;
+    letter-spacing:0.02em;
+  }
+  .pillar p{
+    color:var(--text-dim);
+    font-size:14.5px;
+    line-height:1.65;
+  }
+
+  /* ===== ABOUT SPLIT ===== */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:80px;
+    align-items:center;
+  }
+  .about-art{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:24px;
+    overflow:hidden;
+    border:1px solid var(--card-line);
+  }
+  .about-art img{width:100%;height:100%;object-fit:cover;}
+  .about-art::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 40%, rgba(6,9,7,0.85) 100%);
+  }
+  .about-copy .eyebrow{margin-bottom:16px; display:block;}
+  .about-copy h2{font-size:clamp(30px,4vw,44px); margin-bottom:24px;}
+  .about-copy p{color:var(--text-dim); line-height:1.8; margin-bottom:18px; font-size:15.5px;}
+  .about-copy p strong{color:var(--green-bright); font-weight:600;}
+
+  /* ===== TOKENOMICS ===== */
+  .token-grid{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:64px;
+  }
+  .token-card{
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:20px;
+    padding:32px;
+  }
+  .token-card .row{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 0;
+    border-bottom:1px solid var(--card-line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+  }
+  .token-card .row:last-child{border-bottom:none;}
+  .token-card .row span:first-child{color:var(--text-dim); text-transform:uppercase; letter-spacing:0.05em;}
+  .token-card .row span:last-child{color:var(--green-bright); font-weight:600;}
+
+  .alloc{display:flex; flex-direction:column; gap:18px;}
+  .alloc-item .top{display:flex; justify-content:space-between; margin-bottom:8px; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .alloc-item .top .name{color:var(--text); text-transform:uppercase; letter-spacing:0.04em;}
+  .alloc-item .top .pct{color:var(--green-bright); font-weight:700;}
+  .alloc-bar{height:8px; background:var(--bg-alt); border-radius:6px; overflow:hidden; border:1px solid var(--card-line);}
+  .alloc-fill{height:100%; background:linear-gradient(90deg, var(--green-dim), var(--green));}
+
+  /* ===== HOW TO BUY ===== */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+  }
+  .step{
+    position:relative;
+    padding:36px 28px;
+    border:1px solid var(--card-line);
+    border-radius:20px;
+    background:var(--card);
+  }
+  .step .num{
+    font-family:'Anton',sans-serif;
+    font-size:46px;
+    color:var(--green-dim);
+    -webkit-text-stroke:1.5px var(--green);
+    color:transparent;
+    margin-bottom:18px;
+    display:block;
+  }
+  .step h3{font-size:19px; margin-bottom:12px; text-transform:none; font-family:'Space Grotesk'; font-weight:600;}
+  .step p{color:var(--text-dim); font-size:14.5px; line-height:1.65;}
+
+  /* ===== ROADMAP ===== */
+  .roadmap{
+    position:relative;
+    padding-left:0;
+  }
+  .rm-item{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:32px;
+    padding:34px 0;
+    border-top:1px solid var(--card-line);
+    align-items:start;
+  }
+  .rm-item:last-child{border-bottom:1px solid var(--card-line);}
+  .rm-item .phase{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--green);
+    letter-spacing:0.1em;
+  }
+  .rm-item .phase b{
+    display:block;
+    font-family:'Anton',sans-serif;
+    font-size:38px;
+    color:var(--text-faint);
+    -webkit-text-stroke:1px var(--green-dim);
+    color:transparent;
+  }
+  .rm-item h3{font-size:20px; margin-bottom:10px; font-family:'Space Grotesk'; font-weight:600; text-transform:none; color:var(--text);}
+  .rm-item p{color:var(--text-dim); font-size:14.5px; line-height:1.7; max-width:560px;}
+  .rm-item .tag{
+    display:inline-block;
+    margin-top:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:5px 12px;
+    border-radius:999px;
+    border:1px solid var(--green-dim);
+    color:var(--green-bright);
+  }
+
+  /* ===== COMMUNITY CTA ===== */
+  .cta-band{
+    position:relative;
+    border-radius:28px;
+    border:1px solid var(--card-line);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(126,232,66,0.14), transparent 55%),
+      var(--card);
+    padding:80px 60px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .cta-band h2{font-size:clamp(32px,5vw,52px); margin-bottom:20px;}
+  .cta-band p{color:var(--text-dim); max-width:520px; margin:0 auto 36px; font-size:15.5px; line-height:1.7;}
+  .cta-row{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+  /* ===== FOOTER ===== */
+  footer{
+    border-top:1px solid var(--card-line);
+    padding:56px 0 32px;
+  }
+  .footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:40px;
+    margin-bottom:40px;
+  }
+  .footer-brand{display:flex; align-items:center; gap:12px;}
+  .footer-brand img{width:36px;height:36px;border-radius:50%; border:1.5px solid var(--green);}
+  .footer-brand span{font-family:'Anton',sans-serif; font-size:18px;}
+  .footer-links{display:flex; gap:40px; flex-wrap:wrap;}
+  .footer-col h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:14px;
+  }
+  .footer-col a{
+    display:block;
+    color:var(--text-dim);
+    font-size:14px;
+    margin-bottom:10px;
+    transition:color .2s;
+  }
+  .footer-col a:hover{color:var(--green-bright);}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    padding-top:28px;
+    border-top:1px solid var(--card-line);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--text-faint);
+    line-height:1.7;
+  }
+  .footer-bottom .disclaimer{max-width:640px;}
+
+  /* ===== responsive ===== */
+  @media (max-width:900px){
+    nav.links{display:none;}
+    .pillars{grid-template-columns:repeat(2,1fr);}
+    .about-grid{grid-template-columns:1fr; gap:40px;}
+    .token-grid{grid-template-columns:1fr; gap:40px;}
+    .steps{grid-template-columns:1fr;}
+    .rm-item{grid-template-columns:1fr; gap:8px;}
+    .cta-band{padding:56px 26px;}
+    .hero-stats{gap:32px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <img src="logo.png" alt="ROBWOOF logo">
+      <span>ROB<em>WOOF</em></span>
+    </div>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#tokenomics">Tokenomics</a>
+      <a href="#buy">How to Buy</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#community">Community</a>
+    </nav>
+    <a href="#buy" class="btn btn-solid">Join the Pack</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="hero.jpg" alt="Robwoof wolf overlooking Robinhood Chain city"></div>
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="dot"></span> Live on Robinhood Chain</div>
+    <h1>HUNT. HODL.<span class="line2">REPEAT.</span></h1>
+    <p class="sub">ROBWOOF is the alpha wolf of Robinhood Chain — fair to insiders, fast by design, and built by the pack, for the pack. We don't chase pumps. We hold legacy.</p>
+    <div class="hero-ctas">
+      <a href="#buy" class="btn btn-solid">Buy $ROBWOOF</a>
+      <a href="https://x.com/robwooff" target="_blank" class="btn btn-ghost">Follow on X ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>100%</b><span>Fair Launch</span></div>
+      <div class="stat"><b>0%</b><span>Team Presale</span></div>
+      <div class="stat"><b>∞</b><span>Pack Loyalty</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="accent">◆ FAIR TO INSIDERS</span><span>FAST ON ROBINHOOD CHAIN</span><span class="accent">◆ BUILT BY THE PACK</span><span>WE DON'T CHASE PUMPS</span><span class="accent">◆ HODL FOREVER</span><span>JOIN THE PACK</span>
+    <span class="accent">◆ FAIR TO INSIDERS</span><span>FAST ON ROBINHOOD CHAIN</span><span class="accent">◆ BUILT BY THE PACK</span><span>WE DON'T CHASE PUMPS</span><span class="accent">◆ HODL FOREVER</span><span>JOIN THE PACK</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-art">
+      <img src="hero.jpg" alt="Robwoof artwork">
+    </div>
+    <div class="about-copy">
+      <span class="eyebrow">The Alpha Wolf</span>
+      <h2>Every chain has a pack. Robinhood Chain has Robwoof.</h2>
+      <p>Robwoof isn't chasing a candle — it's marking territory. Born the moment Robinhood Chain went live, $ROBWOOF exists to give the earliest builders and traders on the chain a rallying banner: <strong>one pack, one wolf, one chain.</strong></p>
+      <p>No VC allocation, no team dump, no insider unlock schedule quietly ruining your week. Just a fair launch, a fast chain underneath it, and a community that shows up after the charts go sideways — not just when they're green.</p>
+      <p>The moon isn't the goal. <strong>The pack is the goal.</strong> Everything else follows.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why Robwoof</span>
+      <h2>Four rules of the pack.</h2>
+      <p>Straight from the den — the principles Robwoof was built on, and won't drift from.</p>
+    </div>
+  </div>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="icon">⚖</div>
+      <h3>Fair</h3>
+      <p>No hidden allocation for insiders. Everyone hunts from the same starting line.</p>
+    </div>
+    <div class="pillar">
+      <div class="icon">⚡</div>
+      <h3>Fast</h3>
+      <p>Built natively on Robinhood Chain for low fees and near-instant confirmations.</p>
+    </div>
+    <div class="pillar">
+      <div class="icon">🐾</div>
+      <h3>Community</h3>
+      <p>Built by the pack, for the pack. Every decision runs through the community first.</p>
+    </div>
+    <div class="pillar">
+      <div class="icon">∞</div>
+      <h3>Hodl</h3>
+      <p>We don't chase pumps. We hold legacy — through green candles and red ones alike.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tokenomics">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Tokenomics</span>
+      <h2>Built for the long hunt.</h2>
+      <p>A simple, transparent split with no insider unlock traps. Update these figures once your contract and audit are finalized.</p>
+    </div>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="row"><span>Token Name</span><span>Robwoof</span></div>
+        <div class="row"><span>Ticker</span><span>$ROBWOOF</span></div>
+        <div class="row"><span>Chain</span><span>Robinhood Chain</span></div>
+        <div class="row"><span>Total Supply</span><span>1,000,000,000</span></div>
+        <div class="row"><span>Tax</span><span>0 / 0</span></div>
+        <div class="row"><span>Contract</span><span>Coming Soon</span></div>
+      </div>
+      <div class="alloc">
+        <div class="alloc-item">
+          <div class="top"><span class="name">Community &amp; Liquidity</span><span class="pct">60%</span></div>
+          <div class="alloc-bar"><div class="alloc-fill" style="width:60%"></div></div>
+        </div>
+        <div class="alloc-item">
+          <div class="top"><span class="name">Marketing / Hunt Fund</span><span class="pct">20%</span></div>
+          <div class="alloc-bar"><div class="alloc-fill" style="width:20%"></div></div>
+        </div>
+        <div class="alloc-item">
+          <div class="top"><span class="name">CEX &amp; Ecosystem Growth</span><span class="pct">12%</span></div>
+          <div class="alloc-bar"><div class="alloc-fill" style="width:12%"></div></div>
+        </div>
+        <div class="alloc-item">
+          <div class="top"><span class="name">Team (locked 6 months)</span><span class="pct">8%</span></div>
+          <div class="alloc-bar"><div class="alloc-fill" style="width:8%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="buy">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How to Buy</span>
+      <h2>Three steps into the pack.</h2>
+      <p>No complicated bridging, no gatekeeping. If you can send a transaction, you can hunt with us.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Get a wallet</h3>
+        <p>Install a wallet that supports Robinhood Chain and fund it with the chain's native gas token.</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>Bridge or fund</h3>
+        <p>Bridge assets onto Robinhood Chain, or buy directly if your exchange supports native withdrawals.</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Swap for $ROBWOOF</h3>
+        <p>Head to your Robinhood Chain DEX of choice, paste the official contract address, and swap in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Roadmap</span>
+      <h2>The Hunt.</h2>
+      <p>Four phases. No promises about price — only about what gets built.</p>
+    </div>
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="phase">PHASE<b>01</b></div>
+        <div>
+          <h3>The Den</h3>
+          <p>Fair launch on Robinhood Chain, brand identity, website, and the first hundred wolves forming the core community.</p>
+          <span class="tag">In Progress</span>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="phase">PHASE<b>02</b></div>
+        <div>
+          <h3>The Howl</h3>
+          <p>Community growth push, CEX/DEX listings, first partnerships across the Robinhood Chain builder ecosystem.</p>
+          <span class="tag">Next Up</span>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="phase">PHASE<b>03</b></div>
+        <div>
+          <h3>The Pack</h3>
+          <p>Community-governed initiatives, holder utility, and collaborations with other projects native to the chain.</p>
+          <span class="tag">Planned</span>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="phase">PHASE<b>04</b></div>
+        <div>
+          <h3>The Territory</h3>
+          <p>Robwoof positioned as the reference memecoin of Robinhood Chain — held, not flipped.</p>
+          <span class="tag">Long Term</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="community">
+  <div class="wrap">
+    <div class="cta-band">
+      <span class="eyebrow">Join the Pack</span>
+      <h2 style="margin-top:14px;">The pack hunts together.</h2>
+      <p>No moon promises. Just wolves who show up. Come hold the line with us.</p>
+      <div class="cta-row">
+        <a href="https://x.com/robwooff" target="_blank" class="btn btn-solid">Follow on X ↗</a>
+        <a href="#" class="btn btn-ghost">Join Telegram ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.png" alt="ROBWOOF logo">
+        <span>ROBWOOF</span>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#about">About</a>
+          <a href="#tokenomics">Tokenomics</a>
+          <a href="#roadmap">Roadmap</a>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <a href="https://x.com/robwooff" target="_blank">X / Twitter</a>
+          <a href="#">Telegram</a>
+          <a href="#">Discord</a>
+        </div>
+        <div class="footer-col">
+          <h4>Chain</h4>
+          <a href="#">Robinhood Chain</a>
+          <a href="#">Contract (soon)</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Robwoof. The Alpha Memecoin of Robinhood Chain.</span>
+      <span class="disclaimer">$ROBWOOF is a community memecoin with no intrinsic value or expectation of financial return. Nothing on this site is financial advice. DYOR.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
